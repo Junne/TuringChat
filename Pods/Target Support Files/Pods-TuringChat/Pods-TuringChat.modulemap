@@ -1,0 +1,6 @@
+framework module Pods_TuringChat {
+  umbrella header "Pods-TuringChat-umbrella.h"
+
+  export *
+  module * { export * }
+}
