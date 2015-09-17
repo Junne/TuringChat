@@ -4,10 +4,10 @@ platform :ios, '8.0'
 use_frameworks!
 
 target 'TuringChat' do
-pod 'Alamofire', '~> 1.3'
-pod 'SnapKit', '~> 0.12.0'
-pod 'Parse', '~>1.7'
-pod 'ParseUI', '~>1.1.3'
+pod 'Alamofire', '~> 2.0'
+pod 'SnapKit', '~> 0.14'
+pod 'Parse'
+pod 'ParseUI'
 end
 
 target 'TuringChatTests' do

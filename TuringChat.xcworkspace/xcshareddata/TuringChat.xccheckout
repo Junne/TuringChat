@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>555CD404-D35B-4B38-A19F-3816AC376713</string>
+	<key>IDESourceControlProjectName</key>
+	<string>TuringChat</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>5DF6E5708204D34429B301C3C434C1226712AC20</key>
+		<string>github.com:Junne/TuringChat.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>TuringChat.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>5DF6E5708204D34429B301C3C434C1226712AC20</key>
+		<string>..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>github.com:Junne/TuringChat.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>5DF6E5708204D34429B301C3C434C1226712AC20</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>5DF6E5708204D34429B301C3C434C1226712AC20</string>
+			<key>IDESourceControlWCCName</key>
+			<string>TuringChat</string>
+		</dict>
+	</array>
+</dict>
+</plist>

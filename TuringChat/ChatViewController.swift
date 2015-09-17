@@ -8,14 +8,15 @@
 
 import UIKit
 import SnapKit
-let messageFontSize: CGFloat = 17
-let toolBarMinHeight: CGFloat = 44
-var toolBar: UIToolbar!
-var textView: UITextView!
-var sendButton: UIButton!
+
 
 class ChatViewController: UITableViewController, UITextViewDelegate {
     
+    var textView: UITextView!
+    let messageFontSize: CGFloat = 17
+    let toolBarMinHeight: CGFloat = 44
+    var toolBar: UIToolbar!
+    var sendButton: UIButton!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,7 +42,7 @@ class ChatViewController: UITableViewController, UITextViewDelegate {
                 textView.textContainerInset = UIEdgeInsetsMake(4, 3, 3, 3)
                 toolBar.addSubview(textView)
                 
-                sendButton = UIButton.buttonWithType(.System) as! UIButton
+                sendButton = UIButton(type:.System) 
                 sendButton.enabled = false
                 sendButton.titleLabel?.font = UIFont.boldSystemFontOfSize(17)
                 sendButton.setTitle("发送", forState: .Normal)
@@ -52,19 +53,18 @@ class ChatViewController: UITableViewController, UITextViewDelegate {
                 toolBar.addSubview(sendButton)
                 
                 // 对组件进行Autolayout设置
-                textView.setTranslatesAutoresizingMaskIntoConstraints(false)
-                sendButton.setTranslatesAutoresizingMaskIntoConstraints(false)
+
+                textView.translatesAutoresizingMaskIntoConstraints = false
+                sendButton.translatesAutoresizingMaskIntoConstraints = false
                 
-                textView.snp_makeConstraints({ (make) -> Void in
-                    
+                textView.snp_makeConstraints(closure: { (make) -> Void in
                     make.left.equalTo(toolBar.snp_left).offset(8)
                     make.top.equalTo(toolBar.snp_top).offset(7.5)
                     make.right.equalTo(sendButton.snp_left).offset(-2)
                     make.bottom.equalTo(toolBar.snp_bottom).offset(-8)
-                    
-                    
                 })
-                sendButton.snp_makeConstraints({ (make) -> Void in
+
+                sendButton.snp_makeConstraints(closure: { (make) -> Void in
                     make.right.equalTo(toolBar.snp_right)
                     make.bottom.equalTo(toolBar.snp_bottom).offset(-4.5)
                     

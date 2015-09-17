@@ -16,26 +16,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        Parse.setApplicationId("oUKLlUDcXczJ5KeYwm4SGCjisbxqtjuFxCUgYMAK", clientKey: "0yf166y3CN27ywRDqveMWVfbkixYo7FdwiF5ijoK")
-        var query = PFQuery(className: "Messages")
-        query.orderByAscending("sentDate")
-        query.findObjectsInBackgroundWithBlock { (objects,error) -> Void in
-            for object in objects as! [PFObject]{
-                let incoming:Bool = object.objectForKey("incoming") as! Bool
-                let text:String = object.objectForKey("text") as! String
-                let sentDate:NSDate = object.objectForKey("sentDate") as! NSDate
-                println("\(object.objectId!)\n\(incoming)\n\(text)\n\(sentDate)")
-            }
-        }
+//        Parse.setApplicationId("oUKLlUDcXczJ5KeYwm4SGCjisbxqtjuFxCUgYMAK", clientKey: "0yf166y3CN27ywRDqveMWVfbkixYo7FdwiF5ijoK")
+//        var query = PFQuery(className: "Messages")
+//        query.orderByAscending("sentDate")
+//        query.findObjectsInBackgroundWithBlock { (objects,error) -> Void in
+//            for object:[PFObject]! in objects as! [PFObject] {
+//                let incoming:Bool = object.objectForKey("incoming") as! Bool
+//                let text:String = object.objectForKey("text") as! String
+//                let sentDate:NSDate = object.objectForKey("sentDate") as! NSDate
+//                println("\(object.objectId!)\n\(incoming)\n\(text)\n\(sentDate)")
+//            }
+//        }
         
         
-        var ChatVC:ChatViewController = ChatViewController()
+        let ChatVC:ChatViewController = ChatViewController()
         ChatVC.title = "Hello"
         UINavigationBar.appearance().tintColor = UIColor(red: 0.05, green: 0.47, blue: 0.91, alpha: 1.0)
         UINavigationBar.appearance().barTintColor = UIColor(red: 0.05, green: 0.47, blue: 0.91, alpha: 1.0)
         UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor()]
         UIApplication.sharedApplication().statusBarStyle = .LightContent
-        var navigationVC:UINavigationController = UINavigationController(rootViewController: ChatVC)
+        let navigationVC:UINavigationController = UINavigationController(rootViewController: ChatVC)
         let frame = UIScreen.mainScreen().bounds
         window = UIWindow(frame: frame)
         window!.rootViewController = navigationVC
