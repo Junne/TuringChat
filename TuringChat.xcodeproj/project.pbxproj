@@ -15,6 +15,7 @@
 		F551E0D11BA9500600053ABA /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = F551E0CF1BA9500600053ABA /* LaunchScreen.xib */; };
 		F551E0DD1BA9500600053ABA /* TuringChatTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F551E0DC1BA9500600053ABA /* TuringChatTests.swift */; };
 		F551E0E71BA963BF00053ABA /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F551E0E61BA963BF00053ABA /* ChatViewController.swift */; };
+		F58E00521BABAA3400FD2EF9 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = F58E00511BABAA3400FD2EF9 /* Message.swift */; settings = {ASSET_TAGS = (); }; };
 		F5B2702C1BAA5BE80059E6A0 /* MessageBubbleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5B2702B1BAA5BE80059E6A0 /* MessageBubbleTableViewCell.swift */; };
 		F5B2702E1BAA60D00059E6A0 /* MessageSentDateTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5B2702D1BAA60D00059E6A0 /* MessageSentDateTableViewCell.swift */; };
 /* End PBXBuildFile section */
@@ -44,6 +45,7 @@
 		F551E0DB1BA9500600053ABA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F551E0DC1BA9500600053ABA /* TuringChatTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TuringChatTests.swift; sourceTree = "<group>"; };
 		F551E0E61BA963BF00053ABA /* ChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
+		F58E00511BABAA3400FD2EF9 /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		F5B2702B1BAA5BE80059E6A0 /* MessageBubbleTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageBubbleTableViewCell.swift; sourceTree = "<group>"; };
 		F5B2702D1BAA60D00059E6A0 /* MessageSentDateTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageSentDateTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -108,6 +110,7 @@
 			isa = PBXGroup;
 			children = (
 				F551E0C61BA9500600053ABA /* AppDelegate.swift */,
+				F58E00511BABAA3400FD2EF9 /* Message.swift */,
 				F551E0E61BA963BF00053ABA /* ChatViewController.swift */,
 				F5B2702B1BAA5BE80059E6A0 /* MessageBubbleTableViewCell.swift */,
 				F5B2702D1BAA60D00059E6A0 /* MessageSentDateTableViewCell.swift */,
@@ -300,6 +303,7 @@
 				F551E0C91BA9500600053ABA /* ViewController.swift in Sources */,
 				F551E0E71BA963BF00053ABA /* ChatViewController.swift in Sources */,
 				F5B2702C1BAA5BE80059E6A0 /* MessageBubbleTableViewCell.swift in Sources */,
+				F58E00521BABAA3400FD2EF9 /* Message.swift in Sources */,
 				F551E0C71BA9500600053ABA /* AppDelegate.swift in Sources */,
 				F5B2702E1BAA60D00059E6A0 /* MessageSentDateTableViewCell.swift in Sources */,
 			);

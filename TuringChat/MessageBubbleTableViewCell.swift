@@ -2,7 +2,7 @@
 //  MessageBubbleTableViewCell.swift
 //  TuringChat
 //
-//  Created by baijf on 9/17/15.
+//  Created by Junne on 9/17/15.
 //  Copyright (c) 2015 Junne. All rights reserved.
 //
 
@@ -68,6 +68,27 @@ class MessageBubbleTableViewCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
+    }
+    
+    func configureWithMessage(message: Message) {
+        
+        messageLabel.text = message.text
+        let constraints: NSArray = contentView.constraints
+        let indexOfConstraint = constraints.indexesOfObjectsPassingTest { (constraint, idx, stop) -> Bool in
+            return (constraint.firstItem as! UIView).tag == bubbleTag && (constraint.firstAttribute == NSLayoutAttribute.Left || constraint.firstAttribute == NSLayoutAttribute.Right)
+        }
+        contentView.removeConstraint(constraints[indexOfConstraint] as! NSLayoutConstraint)
+        bubbleImageView.snp_makeConstraints { (make) -> Void in
+            if message.incoming {
+                tag = incomintTag
+                bubbleImageView.image = bubbleImage.incoming
+                bubbleImageView.highlightedImage = bubbleImage.incomingHighlighed
+                messageLabel.textColor = UIColor.blackColor()
+                
+            }
+        }
+        
+        
     }
 
 }
