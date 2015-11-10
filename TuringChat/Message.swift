@@ -2,7 +2,7 @@
 //  Message.swift
 //  TuringChat
 //
-//  Created by baijf on 9/18/15.
+//  Created by Junne on 9/18/15.
 //  Copyright © 2015 Junne. All rights reserved.
 //
 

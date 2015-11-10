@@ -10,6 +10,7 @@ import UIKit
 import SnapKit
 
 
+
 class ChatViewController: UITableViewController, UITextViewDelegate {
     
     var textView: UITextView!
@@ -17,10 +18,40 @@ class ChatViewController: UITableViewController, UITextViewDelegate {
     let toolBarMinHeight: CGFloat = 44
     var toolBar: UIToolbar!
     var sendButton: UIButton!
+    var messages:[[Message]] = [[]]
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.keyboardDismissMode = .Interactive
+        
+        tableView.registerClass(MessageSentDateTableViewCell.self, forCellReuseIdentifier: NSStringFromClass(MessageSentDateTableViewCell))
+        tableView.registerClass(MessageBubbleTableViewCell.self, forCellReuseIdentifier: NSStringFromClass(MessageBubbleTableViewCell))
+        
+        self.tableView.keyboardDismissMode = .Interactive
+        self.tableView.estimatedRowHeight = 44
+        self.tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: toolBarMinHeight, right: 0)
+        self.tableView.separatorStyle = .None
+        self.tableView.delegate = self;
+        self.tableView.dataSource = self;
+        
+        messages = [
+            [
+                Message(incoming: true, text: "你叫什么名字？", sentDate: NSDate(timeIntervalSinceNow: -12*60*60*24)),
+                Message(incoming: false, text: "我叫灵灵，聪明又可爱的灵灵", sentDate: NSDate(timeIntervalSinceNow:-12*60*60*24))
+            ],
+            [
+                Message(incoming: true, text: "你爱不爱我？", sentDate: NSDate(timeIntervalSinceNow: -6*60*60*24 - 200)),
+                Message(incoming: false, text: "爱你么么哒", sentDate: NSDate(timeIntervalSinceNow: -6*60*60*24 - 100))
+            ],
+            [
+                Message(incoming: true, text: "北京今天天气", sentDate: NSDate(timeIntervalSinceNow: -60*60*18)),
+                Message(incoming: false, text: "北京:08/30 周日,19-27° 21° 雷阵雨转小雨-中雨 微风小于3级;08/31 周一,18-26° 中雨 微风小于3级;09/01 周二,18-25° 阵雨 微风小于3级;09/02 周三,20-30° 多云 微风小于3级", sentDate: NSDate(timeIntervalSinceNow: -60*60*18))
+            ],
+            [
+                Message(incoming: true, text: "你在干嘛", sentDate: NSDate(timeIntervalSinceNow: -60)),
+                Message(incoming: false, text: "我会逗你开心啊", sentDate: NSDate(timeIntervalSinceNow: -65))
+            ],
+        ]
+        
 
     }
     
@@ -75,6 +106,33 @@ class ChatViewController: UITableViewController, UITextViewDelegate {
         }
     }
     
+    
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        if indexPath.row == 0 {
+            let cellIdentifier = NSStringFromClass(MessageSentDateTableViewCell)
+            var cell:MessageSentDateTableViewCell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! MessageSentDateTableViewCell
+            cell = MessageSentDateTableViewCell(style: .Default, reuseIdentifier: cellIdentifier)
+            let message = messages[indexPath.row][0]
+            cell.sentDateLabel.text = "\(message.sentDate)"
+            return cell
+        } else {
+            let cellIdentifier = NSStringFromClass(MessageBubbleTableViewCell)
+            var cell:MessageBubbleTableViewCell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! MessageBubbleTableViewCell
+            cell = MessageBubbleTableViewCell(style: .Default, reuseIdentifier: cellIdentifier)
+            let message = messages[indexPath.section][indexPath.row - 1]
+            cell.configureWithMessage(message)
+            return cell
+        }
+    }
+    
+    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return messages.count
+    }
+    
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return messages[section].count + 1
+    }
+    
     override func canBecomeFirstResponder() -> Bool {
         return true
     }
@@ -85,17 +143,13 @@ class ChatViewController: UITableViewController, UITextViewDelegate {
     }
     
 
-    /*
-    // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }
+
+//extension ChatViewController: UITableViewDelegate,UITableViewDataSource {
+//    
+//}
 
 class InputTextView: UITextView {
     

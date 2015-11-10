@@ -77,17 +77,29 @@ class MessageBubbleTableViewCell: UITableViewCell {
         let indexOfConstraint = constraints.indexesOfObjectsPassingTest { (constraint, idx, stop) -> Bool in
             return (constraint.firstItem as! UIView).tag == bubbleTag && (constraint.firstAttribute == NSLayoutAttribute.Left || constraint.firstAttribute == NSLayoutAttribute.Right)
         }
-        contentView.removeConstraint(constraints[indexOfConstraint] as! NSLayoutConstraint)
+        contentView.removeConstraint(constraints[indexOfConstraint.count] as! NSLayoutConstraint)
         bubbleImageView.snp_makeConstraints { (make) -> Void in
             if message.incoming {
                 tag = incomintTag
                 bubbleImageView.image = bubbleImage.incoming
                 bubbleImageView.highlightedImage = bubbleImage.incomingHighlighed
                 messageLabel.textColor = UIColor.blackColor()
+                make.left.equalTo(contentView.snp_left).offset(10)
+                messageLabel.snp_updateConstraints(closure: { (make) -> Void in
+                    make.centerX.equalTo(bubbleImageView.snp_centerX).offset(3)
+                })
                 
+            } else {
+                tag = outgoingTag
+                bubbleImageView.image = bubbleImage.outgoing
+                bubbleImageView.highlightedImage = bubbleImage.outgoingHighlighed
+                messageLabel.textColor = UIColor.whiteColor()
+                make.right.equalTo(contentView.snp_right).offset(-10)
+                messageLabel.snp_updateConstraints(closure: { (make) -> Void in
+                    make.centerX.equalTo(bubbleImageView.snp_centerX).offset(-3)
+                })
             }
         }
-        
         
     }
 
