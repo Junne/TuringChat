@@ -16,15 +16,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-//        Parse.setApplicationId("oUKLlUDcXczJ5KeYwm4SGCjisbxqtjuFxCUgYMAK", clientKey: "0yf166y3CN27ywRDqveMWVfbkixYo7FdwiF5ijoK")
-//        var query = PFQuery(className: "Messages")
+        Parse.setApplicationId("oUKLlUDcXczJ5KeYwm4SGCjisbxqtjuFxCUgYMAK", clientKey: "0yf166y3CN27ywRDqveMWVfbkixYo7FdwiF5ijoK")
+//        let query = PFQuery(className: "Messages")
 //        query.orderByAscending("sentDate")
 //        query.findObjectsInBackgroundWithBlock { (objects,error) -> Void in
-//            for object:[PFObject]! in objects as! [PFObject] {
+//            for object in objects!  {
 //                let incoming:Bool = object.objectForKey("incoming") as! Bool
 //                let text:String = object.objectForKey("text") as! String
 //                let sentDate:NSDate = object.objectForKey("sentDate") as! NSDate
-//                println("\(object.objectId!)\n\(incoming)\n\(text)\n\(sentDate)")
+//                print("\(object.objectId!)\n\(incoming)\n\(text)\n\(sentDate)")
 //            }
 //        }
         

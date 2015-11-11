@@ -8,6 +8,7 @@
 
 import UIKit
 import SnapKit
+import Parse 
 
 
 
@@ -33,26 +34,99 @@ class ChatViewController: UITableViewController, UITextViewDelegate {
         self.tableView.delegate = self;
         self.tableView.dataSource = self;
         
-        messages = [
-            [
-                Message(incoming: true, text: "你叫什么名字？", sentDate: NSDate(timeIntervalSinceNow: -12*60*60*24)),
-                Message(incoming: false, text: "我叫灵灵，聪明又可爱的灵灵", sentDate: NSDate(timeIntervalSinceNow:-12*60*60*24))
-            ],
-            [
-                Message(incoming: true, text: "你爱不爱我？", sentDate: NSDate(timeIntervalSinceNow: -6*60*60*24 - 200)),
-                Message(incoming: false, text: "爱你么么哒", sentDate: NSDate(timeIntervalSinceNow: -6*60*60*24 - 100))
-            ],
-            [
-                Message(incoming: true, text: "北京今天天气", sentDate: NSDate(timeIntervalSinceNow: -60*60*18)),
-                Message(incoming: false, text: "北京:08/30 周日,19-27° 21° 雷阵雨转小雨-中雨 微风小于3级;08/31 周一,18-26° 中雨 微风小于3级;09/01 周二,18-25° 阵雨 微风小于3级;09/02 周三,20-30° 多云 微风小于3级", sentDate: NSDate(timeIntervalSinceNow: -60*60*18))
-            ],
-            [
-                Message(incoming: true, text: "你在干嘛", sentDate: NSDate(timeIntervalSinceNow: -60)),
-                Message(incoming: false, text: "我会逗你开心啊", sentDate: NSDate(timeIntervalSinceNow: -65))
-            ],
-        ]
+        initData()
+        
+//        messages = [
+//            [
+//                Message(incoming: true, text: "你叫什么名字？", sentDate: NSDate(timeIntervalSinceNow: -12*60*60*24)),
+//                Message(incoming: false, text: "我叫灵灵，聪明又可爱的灵灵", sentDate: NSDate(timeIntervalSinceNow:-12*60*60*24))
+//            ],
+//            [
+//                Message(incoming: true, text: "你爱不爱我？", sentDate: NSDate(timeIntervalSinceNow: -6*60*60*24 - 200)),
+//                Message(incoming: false, text: "爱你么么哒", sentDate: NSDate(timeIntervalSinceNow: -6*60*60*24 - 100))
+//            ],
+//            [
+//                Message(incoming: true, text: "北京今天天气", sentDate: NSDate(timeIntervalSinceNow: -60*60*18)),
+//                Message(incoming: false, text: "北京:08/30 周日,19-27° 21° 雷阵雨转小雨-中雨 微风小于3级;08/31 周一,18-26° 中雨 微风小于3级;09/01 周二,18-25° 阵雨 微风小于3级;09/02 周三,20-30° 多云 微风小于3级", sentDate: NSDate(timeIntervalSinceNow: -60*60*18))
+//            ],
+//            [
+//                Message(incoming: true, text: "你在干嘛", sentDate: NSDate(timeIntervalSinceNow: -60)),
+//                Message(incoming: false, text: "我会逗你开心啊", sentDate: NSDate(timeIntervalSinceNow: -65))
+//            ],
+//        ]
         
 
+    }
+    
+    
+    func initData() {
+        var index = 0
+        var section = 0
+        var currentDate:NSDate?
+        
+        let query = PFQuery(className: "Messages")
+        query.orderByAscending("sentDate")
+        
+//        query.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
+//            for object in objects! {
+//                let message = Message(incoming: object["incoming"] as! Bool, text: object["text"] as! String, sentDate: object["sentDate"] as! NSDate)
+//                if index == 0 {
+//                    currentDate = message.sentDate
+//                }
+//                let timeIntervel = message.sentDate.timeIntervalSinceDate(currentDate!)
+//                
+//                if timeIntervel < 120 {
+//                    self.messages[section].append(message)
+//                } else {
+//                    section++
+//                    self.messages.append([message])
+//                }
+//                currentDate = message.sentDate
+//                index++
+//            }
+//        }
+        
+
+        do {
+            let queryObjects = try query.findObjects()
+            for object in queryObjects {
+                let message = Message(incoming: object["incoming"] as! Bool, text: object["text"] as! String, sentDate: object["sentDate"] as! NSDate)
+                if index == 0 {
+                    currentDate = message.sentDate
+                }
+                let timeIntervel = message.sentDate.timeIntervalSinceDate(currentDate!)
+                
+                if timeIntervel < 120 {
+                    messages[section].append(message)
+                } else {
+                    section++
+                    messages.append([message])
+                }
+                currentDate = message.sentDate
+                index++
+               }
+        } catch _ {
+            
+        }
+        
+//        for object in query.findObjects() {
+//            
+//            let message = Message(incoming: object["incoming"] as! Bool, text: object["text"] as! String, sentDate: object["sentDate"] as! NSDate)
+//            if index == 0 {
+//                currentDate = message.sentDate
+//            }
+//            let timeIntervel = message.sentDate.timeIntervalSinceDate(currentDate!)
+//            
+//            if timeIntervel < 120 {
+//                messages[section].append(message)
+//            } else {
+//                section++
+//                messages.append([message])
+//            }
+//            currentDate = message.sentDate
+//            index++
+//        
+//         }
     }
     
     override var inputAccessoryView: UIView! {
@@ -110,15 +184,17 @@ class ChatViewController: UITableViewController, UITextViewDelegate {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if indexPath.row == 0 {
             let cellIdentifier = NSStringFromClass(MessageSentDateTableViewCell)
-            var cell:MessageSentDateTableViewCell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! MessageSentDateTableViewCell
-            cell = MessageSentDateTableViewCell(style: .Default, reuseIdentifier: cellIdentifier)
+            let cell:MessageSentDateTableViewCell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! MessageSentDateTableViewCell
+//            cell = MessageSentDateTableViewCell(style: .Default, reuseIdentifier: cellIdentifier)
             let message = messages[indexPath.row][0]
-            cell.sentDateLabel.text = "\(message.sentDate)"
+//            cell.sentDateLabel.text = "\(message.sentDate)"
+            print(message.sentDate)
+            cell.sentDateLabel.text = formatDate(message.sentDate)
             return cell
         } else {
             let cellIdentifier = NSStringFromClass(MessageBubbleTableViewCell)
-            var cell:MessageBubbleTableViewCell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! MessageBubbleTableViewCell
-            cell = MessageBubbleTableViewCell(style: .Default, reuseIdentifier: cellIdentifier)
+            let cell:MessageBubbleTableViewCell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! MessageBubbleTableViewCell
+//            cell = MessageBubbleTableViewCell(style: .Default, reuseIdentifier: cellIdentifier)
             let message = messages[indexPath.section][indexPath.row - 1]
             cell.configureWithMessage(message)
             return cell
@@ -142,7 +218,44 @@ class ChatViewController: UITableViewController, UITextViewDelegate {
         // Dispose of any resources that can be recreated.
     }
     
-
+//    func formatDate(date: NSDate) -> String {
+//        let calendar = NSCalendar.currentCalendar()
+//        let dateFormatter = NSDateFormatter()
+//        dateFormatter.locale = NSLocale(localeIdentifier: "zh_CN")
+//        
+//        let last18hours = (-18*60*60 < date.timeIntervalSinceNow)
+//        let isToday = calendar.isDateInToday(date)
+//        let isLast7Days = (calendar.compareDate(NSDate(timeIntervalSinceNow: -70*4*60*60), toDate: date, toUnitGranularity: .Day) == NSComparisonResult.OrderedAscending)
+//        
+//        if last18hours || isToday {
+//            dateFormatter.dateFormat = "a HH:mm"
+//        } else if isLast7Days {
+//            dateFormatter.dateFormat = "MM月dd日 a HH:mm EEEE"
+//        } else {
+//            dateFormatter.dateFormat = "YYYY年MM月dd日 a HH:mm"
+//        }
+//        return dateFormatter.stringFromDate(date)
+//    }
+    
+    func formatDate(date: NSDate) -> String {
+        let calendar = NSCalendar.currentCalendar()
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.locale = NSLocale(localeIdentifier: "zh_CN")
+        
+        let last18hours = (-18*60*60 < date.timeIntervalSinceNow)
+        let isToday = calendar.isDateInToday(date)
+        let isLast7Days = (calendar.compareDate(NSDate(timeIntervalSinceNow: -7*24*60*60), toDate: date, toUnitGranularity: .Day) == NSComparisonResult.OrderedAscending)
+        
+        if last18hours || isToday {
+            dateFormatter.dateFormat = "a HH:mm"
+        } else if isLast7Days {
+            dateFormatter.dateFormat = "MM月dd日 a HH:mm EEEE"
+        } else {
+            dateFormatter.dateFormat = "YYYY年MM月dd日 a HH:mm"
+            
+        }
+        return dateFormatter.stringFromDate(date)
+    }
 
 
 }
