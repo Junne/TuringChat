@@ -2,7 +2,7 @@
 //  MessageSentDateTableViewCell.swift
 //  TuringChat
 //
-//  Created by baijf on 9/17/15.
+//  Created by Junne on 9/17/15.
 //  Copyright (c) 2015 Junne. All rights reserved.
 //
 
