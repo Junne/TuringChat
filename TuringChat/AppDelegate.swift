@@ -9,6 +9,10 @@
 import UIKit
 import Parse
 
+let api_key = "2836ffb78226e81dcd0c2a81117c5c2a"
+let api_url = "http://www.tuling123.com/openapi/api"
+let userId = "junnehello"
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 

@@ -15,7 +15,7 @@
 		F551E0D11BA9500600053ABA /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = F551E0CF1BA9500600053ABA /* LaunchScreen.xib */; };
 		F551E0DD1BA9500600053ABA /* TuringChatTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F551E0DC1BA9500600053ABA /* TuringChatTests.swift */; };
 		F551E0E71BA963BF00053ABA /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F551E0E61BA963BF00053ABA /* ChatViewController.swift */; };
-		F58E00521BABAA3400FD2EF9 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = F58E00511BABAA3400FD2EF9 /* Message.swift */; settings = {ASSET_TAGS = (); }; };
+		F58E00521BABAA3400FD2EF9 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = F58E00511BABAA3400FD2EF9 /* Message.swift */; };
 		F5B2702C1BAA5BE80059E6A0 /* MessageBubbleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5B2702B1BAA5BE80059E6A0 /* MessageBubbleTableViewCell.swift */; };
 		F5B2702E1BAA60D00059E6A0 /* MessageSentDateTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5B2702D1BAA60D00059E6A0 /* MessageSentDateTableViewCell.swift */; };
 /* End PBXBuildFile section */

@@ -9,7 +9,7 @@
 import UIKit
 import SnapKit
 import Parse 
-
+import Alamofire
 
 
 class ChatViewController: UITableViewController, UITextViewDelegate {
@@ -260,9 +260,79 @@ class ChatViewController: UITableViewController, UITextViewDelegate {
 
 }
 
-//extension ChatViewController: UITableViewDelegate,UITableViewDataSource {
-//    
-//}
+extension ChatViewController {
+    func sendAction() {
+        messages.append([Message(incoming: false, text: textView.text, sentDate: NSDate())])
+        textView.text = nil
+        updateTextViewHeight()
+        sendButton.enabled = false
+        
+        let lastSection = tableView.numberOfSections
+        tableView.beginUpdates()
+        tableView.insertSections(NSIndexSet(index: lastSection), withRowAnimation: .Automatic)
+        tableView.insertRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: lastSection),NSIndexPath(forRow: 1, inSection: lastSection)], withRowAnimation: .Automatic)
+        tableView.endUpdates()
+        tableViewScrollToBottomAnimated(true)
+
+        
+        Alamofire.request(.GET, NSURL(string: api_url)!, parameters: ["key":api_key,"info":textView.text,"userid":userId]).responseJSON(options: NSJSONReadingOptions.MutableContainers) { (_,_,data) -> Void in
+          
+            print(data)
+        if let text = data.value!.objectForKey("text") as? String{
+            self.messages[lastSection].append(Message(incoming: true, text:text, sentDate: NSDate()))
+            self.tableView.beginUpdates()
+            self.tableView.insertRowsAtIndexPaths([
+                NSIndexPath(forRow: 2, inSection: lastSection)
+                ], withRowAnimation: .Automatic)
+            self.tableView.endUpdates()
+            self.tableViewScrollToBottomAnimated(true)
+        }
+            
+//            if error == nil {
+//                if let text = data!.objectForKey("text") as? String{
+//                    self.messages[lastSection].append(Message(incoming: true, text:text, sentDate: NSDate()))
+//                    self.tableView.beginUpdates()
+//                    self.tableView.insertRowsAtIndexPaths([
+//                        NSIndexPath(forRow: 2, inSection: lastSection)
+//                        ], withRowAnimation: .Automatic)
+//                    self.tableView.endUpdates()
+//                    self.tableViewScrollToBottomAnimated(true)
+//                }
+//            }else{
+//                println("Error occured! \(error?.userInfo)")
+//            }
+        }
+        
+    }
+    
+    func tableViewScrollToBottomAnimated(animated:Bool) {
+        let numberOfSections = messages.count
+        let numberOfRows = messages[numberOfSections - 1].count
+        if numberOfRows > 0 {
+            tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: numberOfRows, inSection: numberOfSections - 1), atScrollPosition: .Bottom, animated: animated)
+        }
+    }
+    
+    func updateTextViewHeight() {
+//        let oldHeight = textView.frame.height
+//        let maxHeight = UIInterfaceOrientationIsPortrait(interfaceOrientation) ? textViewMaxHeight.portrait : textViewMaxHeight.landscape
+//        textView.
+//        var newHeight = min(textView.sizeThatFits(CGSize(width: textView.frame.width, height: CGFloat.max)).height, maxHeight)
+//        #if arch(x86_64) || arch(arm64)
+//            newHeight = ceil(newHeight)
+//        #else
+//            newHeight = CGFloat(ceilf(newHeight.native))
+//        #endif
+//        if newHeight != oldHeight {
+//            toolBar.frame.size.height = newHeight+8*2-0.5
+//        }
+    }
+    
+    func textViewDidChange(textView: UITextView) {
+        updateTextViewHeight()
+        sendButton.enabled = textView.hasText()
+    }
+}
 
 class InputTextView: UITextView {
     
