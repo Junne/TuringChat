@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		6B0B7711E6CBEEB2E7197CA2 /* Pods_TuringChat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC029ADE68E7C4EFA7A28173 /* Pods_TuringChat.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		F54B14CD1C103426008360DD /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F54B14CC1C103426008360DD /* WelcomeViewController.swift */; };
+		F54B14CF1C10346C008360DD /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F54B14CE1C10346C008360DD /* LoginViewController.swift */; };
+		F54B14D11C1034A6008360DD /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F54B14D01C1034A6008360DD /* SignUpViewController.swift */; };
 		F551E0C71BA9500600053ABA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F551E0C61BA9500600053ABA /* AppDelegate.swift */; };
 		F551E0C91BA9500600053ABA /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F551E0C81BA9500600053ABA /* ViewController.swift */; };
 		F551E0CC1BA9500600053ABA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F551E0CA1BA9500600053ABA /* Main.storyboard */; };
@@ -34,6 +37,9 @@
 		36C739024A6282AB9E8B7C83 /* Pods-TuringChat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TuringChat.release.xcconfig"; path = "Pods/Target Support Files/Pods-TuringChat/Pods-TuringChat.release.xcconfig"; sourceTree = "<group>"; };
 		5DAE7EEC5A6923D39A279395 /* Pods-TuringChat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TuringChat.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TuringChat/Pods-TuringChat.debug.xcconfig"; sourceTree = "<group>"; };
 		BC029ADE68E7C4EFA7A28173 /* Pods_TuringChat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TuringChat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F54B14CC1C103426008360DD /* WelcomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
+		F54B14CE1C10346C008360DD /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		F54B14D01C1034A6008360DD /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		F551E0C11BA9500600053ABA /* TuringChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TuringChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F551E0C51BA9500600053ABA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F551E0C61BA9500600053ABA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -110,6 +116,9 @@
 			isa = PBXGroup;
 			children = (
 				F551E0C61BA9500600053ABA /* AppDelegate.swift */,
+				F54B14CC1C103426008360DD /* WelcomeViewController.swift */,
+				F54B14CE1C10346C008360DD /* LoginViewController.swift */,
+				F54B14D01C1034A6008360DD /* SignUpViewController.swift */,
 				F58E00511BABAA3400FD2EF9 /* Message.swift */,
 				F551E0E61BA963BF00053ABA /* ChatViewController.swift */,
 				F5B2702B1BAA5BE80059E6A0 /* MessageBubbleTableViewCell.swift */,
@@ -304,8 +313,11 @@
 				F551E0E71BA963BF00053ABA /* ChatViewController.swift in Sources */,
 				F5B2702C1BAA5BE80059E6A0 /* MessageBubbleTableViewCell.swift in Sources */,
 				F58E00521BABAA3400FD2EF9 /* Message.swift in Sources */,
+				F54B14CF1C10346C008360DD /* LoginViewController.swift in Sources */,
 				F551E0C71BA9500600053ABA /* AppDelegate.swift in Sources */,
+				F54B14D11C1034A6008360DD /* SignUpViewController.swift in Sources */,
 				F5B2702E1BAA60D00059E6A0 /* MessageSentDateTableViewCell.swift in Sources */,
+				F54B14CD1C103426008360DD /* WelcomeViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

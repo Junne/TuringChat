@@ -33,16 +33,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        }
         
         
-        let ChatVC:ChatViewController = ChatViewController()
-        ChatVC.title = "Hello"
-        UINavigationBar.appearance().tintColor = UIColor(red: 0.05, green: 0.47, blue: 0.91, alpha: 1.0)
+//        let ChatVC:ChatViewController = ChatViewController()
+//        ChatVC.title = "Hello"
+//        UINavigationBar.appearance().tintColor = UIColor(red: 0.05, green: 0.47, blue: 0.91, alpha: 1.0)
+//        UINavigationBar.appearance().barTintColor = UIColor(red: 0.05, green: 0.47, blue: 0.91, alpha: 1.0)
+//        UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor()]
+//        UIApplication.sharedApplication().statusBarStyle = .LightContent
+//        let navigationVC:UINavigationController = UINavigationController(rootViewController: ChatVC)
+//        let frame = UIScreen.mainScreen().bounds
+//        window = UIWindow(frame: frame)
+//        window!.rootViewController = navigationVC
+//        window!.makeKeyAndVisible()
+//        return true
+        
+        
+        let welcomeVC:WelcomeViewController = WelcomeViewController()
+        
+        UINavigationBar.appearance().tintColor = UIColor.whiteColor()
         UINavigationBar.appearance().barTintColor = UIColor(red: 0.05, green: 0.47, blue: 0.91, alpha: 1.0)
         UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor()]
-        UIApplication.sharedApplication().statusBarStyle = .LightContent
-        let navigationVC:UINavigationController = UINavigationController(rootViewController: ChatVC)
+        UIApplication.sharedApplication().statusBarStyle = UIStatusBarStyle.LightContent
+        
+        
         let frame = UIScreen.mainScreen().bounds
         window = UIWindow(frame: frame)
-        window!.rootViewController = navigationVC
+        
+        window!.rootViewController = welcomeVC
         window!.makeKeyAndVisible()
         return true
     }

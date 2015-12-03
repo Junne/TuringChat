@@ -67,10 +67,15 @@ class ChatViewController: UITableViewController, UITextViewDelegate {
         var index = 0
         var section = 0
         var currentDate:NSDate?
-        
+        self.messages = [[Message(incoming: true, text: "你好，请叫我灵灵，我是主人的贴身小助手!", sentDate: NSDate())]]
         let query = PFQuery(className: "Messages")
         query.orderByAscending("sentDate")
         
+        if let user = PFUser.currentUser(){
+            query.whereKey("createdBy", equalTo: user)
+            messages = [[Message(incoming: true, text: "\(user.username!)你好，请叫我灵灵，我是主人的贴身小助手!", sentDate: NSDate())]]
+        }
+
 //        query.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
 //            for object in objects! {
 //                let message = Message(incoming: object["incoming"] as! Bool, text: object["text"] as! String, sentDate: object["sentDate"] as! NSDate)
@@ -90,74 +95,74 @@ class ChatViewController: UITableViewController, UITextViewDelegate {
 //            }
 //        }
         
-//        query.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
-//            
-//            if error == nil {
-//                if objects!.count > 0 {
-//                    
-//                    do {
-//                        let queryObjects = try query.findObjects()
-//                        for object in queryObjects {
-//                            
-//
-//                            
-//                            let message = Message(incoming: object["incoming"] as! Bool, text: object["text"] as! String, sentDate: object["sentDate"] as! NSDate)
-//                            if let url = object["url"] as? String {
-//                                message.url = url
-//                            }
-//                            if index == 0 {
-//                                currentDate = message.sentDate
-//                            }
-//                            let timeIntervel = message.sentDate.timeIntervalSinceDate(currentDate!)
-//                            
-//                            if timeIntervel < 120 {
-//                                self.messages[section].append(message)
-//                            } else {
-//                                section++
-//                                self.messages.append([message])
-//                            }
-//                            
-//                            currentDate = message.sentDate
-//                            if index == objects!.count - 1 {
-//                                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-//                                    self.tableView.reloadData()
-//                                })
-//                            }
-//                            index++
-//                        }
-//                    } catch _ {
-//                        
-//                    }
-//                    
-//                }
-//            }
-//        }
-
-        do {
-            let queryObjects = try query.findObjects()
-            for object in queryObjects {
-                let message = Message(incoming: object["incoming"] as! Bool, text: object["text"] as! String, sentDate: object["sentDate"] as! NSDate)
-                if let url = object["url"] as? String {
-                    message.url = url
-                }
-                if index == 0 {
-                    currentDate = message.sentDate
-                }
-                let timeIntervel = message.sentDate.timeIntervalSinceDate(currentDate!)
-                
-                if timeIntervel < 120 {
-                    messages[section].append(message)
-                } else {
-                    section++
-                    messages.append([message])
-                }
-
-                currentDate = message.sentDate
-                index++
-               }
-        } catch _ {
+        query.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
             
+            if error == nil {
+                if objects!.count > 0 {
+                    
+                    do {
+                        let queryObjects = try query.findObjects()
+                        for object in queryObjects {
+                            if index == objects!.count - 1 {
+                                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                                    self.tableView.reloadData()
+                                })
+                            }
+
+                            
+                            let message = Message(incoming: object["incoming"] as! Bool, text: object["text"] as! String, sentDate: object["sentDate"] as! NSDate)
+                            if let url = object["url"] as? String {
+                                message.url = url
+                            }
+                            if index == 0 {
+                                currentDate = message.sentDate
+                            }
+                            let timeIntervel = message.sentDate.timeIntervalSinceDate(currentDate!)
+                            
+                            if timeIntervel < 120 {
+                                self.messages[section].append(message)
+                            } else {
+                                section++
+                                self.messages.append([message])
+                            }
+                            
+                            currentDate = message.sentDate
+
+                            index++
+                        }
+                    } catch _ {
+                        
+                    }
+                    
+                }
+            }
         }
+
+//        do {
+//            let queryObjects = try query.findObjects()
+//            for object in queryObjects {
+//                let message = Message(incoming: object["incoming"] as! Bool, text: object["text"] as! String, sentDate: object["sentDate"] as! NSDate)
+//                if let url = object["url"] as? String {
+//                    message.url = url
+//                }
+//                if index == 0 {
+//                    currentDate = message.sentDate
+//                }
+//                let timeIntervel = message.sentDate.timeIntervalSinceDate(currentDate!)
+//                
+//                if timeIntervel < 120 {
+//                    messages[section].append(message)
+//                } else {
+//                    section++
+//                    messages.append([message])
+//                }
+//
+//                currentDate = message.sentDate
+//                index++
+//               }
+//        } catch _ {
+//            
+//        }
         
 //        query.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
 //            if error == nil {
@@ -509,6 +514,8 @@ extension ChatViewController {
         saveObject["text"] = message.text
         saveObject["sentDate"] = message.sentDate
         saveObject["url"] = message.url
+        let user = PFUser.currentUser()
+        saveObject["createdBy"] = user
         saveObject.saveEventually { (success, error) -> Void in
             if success{
                 print("消息保存成功!")
