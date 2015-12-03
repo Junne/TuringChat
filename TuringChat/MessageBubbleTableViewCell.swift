@@ -17,6 +17,7 @@ class MessageBubbleTableViewCell: UITableViewCell {
     let bubbleImageView: UIImageView
     let messageLabel: UILabel
     let messageFontSize: CGFloat = 17
+    var url = ""
 
 
     override func awakeFromNib() {
@@ -73,6 +74,7 @@ class MessageBubbleTableViewCell: UITableViewCell {
     func configureWithMessage(message: Message) {
         
         messageLabel.text = message.text
+        self.url = message.url
         let constraints: NSArray = contentView.constraints
         let indexOfConstraint = constraints.indexesOfObjectsPassingTest { (constraint, idx, stop) -> Bool in
             return (constraint.firstItem as! UIView).tag == bubbleTag && (constraint.firstAttribute == NSLayoutAttribute.Left || constraint.firstAttribute == NSLayoutAttribute.Right)

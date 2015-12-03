@@ -36,6 +36,10 @@ class ChatViewController: UITableViewController, UITextViewDelegate {
         
         initData()
         
+        let notificationCenter = NSNotificationCenter.defaultCenter()
+        notificationCenter.addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
+        notificationCenter.addObserver(self, selector: "keyboardDidShow:", name: UIKeyboardDidShowNotification, object: nil)
+        
 //        messages = [
 //            [
 //                Message(incoming: true, text: "你叫什么名字？", sentDate: NSDate(timeIntervalSinceNow: -12*60*60*24)),
@@ -86,11 +90,56 @@ class ChatViewController: UITableViewController, UITextViewDelegate {
 //            }
 //        }
         
+//        query.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
+//            
+//            if error == nil {
+//                if objects!.count > 0 {
+//                    
+//                    do {
+//                        let queryObjects = try query.findObjects()
+//                        for object in queryObjects {
+//                            
+//
+//                            
+//                            let message = Message(incoming: object["incoming"] as! Bool, text: object["text"] as! String, sentDate: object["sentDate"] as! NSDate)
+//                            if let url = object["url"] as? String {
+//                                message.url = url
+//                            }
+//                            if index == 0 {
+//                                currentDate = message.sentDate
+//                            }
+//                            let timeIntervel = message.sentDate.timeIntervalSinceDate(currentDate!)
+//                            
+//                            if timeIntervel < 120 {
+//                                self.messages[section].append(message)
+//                            } else {
+//                                section++
+//                                self.messages.append([message])
+//                            }
+//                            
+//                            currentDate = message.sentDate
+//                            if index == objects!.count - 1 {
+//                                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+//                                    self.tableView.reloadData()
+//                                })
+//                            }
+//                            index++
+//                        }
+//                    } catch _ {
+//                        
+//                    }
+//                    
+//                }
+//            }
+//        }
 
         do {
             let queryObjects = try query.findObjects()
             for object in queryObjects {
                 let message = Message(incoming: object["incoming"] as! Bool, text: object["text"] as! String, sentDate: object["sentDate"] as! NSDate)
+                if let url = object["url"] as? String {
+                    message.url = url
+                }
                 if index == 0 {
                     currentDate = message.sentDate
                 }
@@ -102,12 +151,69 @@ class ChatViewController: UITableViewController, UITextViewDelegate {
                     section++
                     messages.append([message])
                 }
+
                 currentDate = message.sentDate
                 index++
                }
         } catch _ {
             
         }
+        
+//        query.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
+//            if error == nil {
+//                
+//                if objects!.count > 0 {
+//                    
+//                    for object in objects as! [PFObject] {
+//                        
+//                        if index == objects!.count - 1{
+//                            
+//                            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+//                                
+//                                self.tableView.reloadData()
+//                                
+//                            })
+//                            
+//                        }
+//                        
+//                        let message = Message(incoming: object["incoming"] as! Bool, text: object["text"] as! String, sentDate: object["sentDate"] as! NSDate)
+//                        
+//                        if let url = object["url"] as? String{
+//                            
+//                            message.url = url
+//                            
+//                        }
+//                        if index == 0{
+//                            
+//                            currentDate = message.sentDate
+//                            
+//                        }
+//                        let timeInterval = message.sentDate.timeIntervalSinceDate(currentDate!)
+//                        
+//                        
+//                        if timeInterval < 120{
+//                            
+//                            self.messages[section].append(message)
+//                            
+//                            
+//                        }else{
+//                            
+//                            section++
+//                            
+//                            self.messages.append([message])
+//                            
+//                        }
+//                        currentDate = message.sentDate
+//                        
+//                        index++
+//                        
+//                    }
+//                }
+//                
+//            }else{
+//                println("error \(error?.userInfo)")
+//            }
+//        }
         
 //        for object in query.findObjects() {
 //            
@@ -128,6 +234,53 @@ class ChatViewController: UITableViewController, UITextViewDelegate {
 //        
 //         }
     }
+    
+    func keyboardWillShow(notification: NSNotification) {
+        
+        let userInfo = notification.userInfo as NSDictionary!
+        let frameNew = (userInfo[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
+        let insetNewBottom = tableView.convertRect(frameNew, fromView: nil).height
+        let insetOld = tableView.contentInset
+        let insetChange = insetNewBottom - insetOld.bottom
+        let overflow = tableView.contentSize.height - (tableView.frame.height-insetOld.top-insetOld.bottom)
+        
+        let duration = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as! NSNumber).doubleValue
+        let animations: (() -> Void) = {
+            if !(self.tableView.tracking || self.tableView.decelerating) {
+                // 根据键盘位置调整Inset
+                if overflow > 0 {
+                    self.tableView.contentOffset.y += insetChange
+                    if self.tableView.contentOffset.y < -insetOld.top {
+                        self.tableView.contentOffset.y = -insetOld.top
+                    }
+                } else if insetChange > -overflow {
+                    self.tableView.contentOffset.y += insetChange + overflow
+                }
+            }
+        }
+        if duration > 0 {
+            let options = UIViewAnimationOptions(rawValue: UInt((userInfo[UIKeyboardAnimationCurveUserInfoKey] as! NSNumber).integerValue << 16)) // http://stackoverflow.com/a/18873820/242933
+            UIView.animateWithDuration(duration, delay: 0, options: options, animations: animations, completion: nil)
+        } else {
+            animations()
+        }
+    }
+    
+    func keyboardDidShow(notification: NSNotification) {
+        let userInfo = notification.userInfo as NSDictionary!
+        let frameNew = (userInfo[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
+        let insetNewBottom = tableView.convertRect(frameNew, fromView: nil).height
+        
+        //根据键盘高度设置Inset
+        let contentOffsetY = tableView.contentOffset.y
+        tableView.contentInset.bottom = insetNewBottom
+        tableView.scrollIndicatorInsets.bottom = insetNewBottom
+        // 优化，防止键盘消失后tableview有跳跃
+        if self.tableView.tracking || self.tableView.decelerating {
+            tableView.contentOffset.y = contentOffsetY
+        }
+    }
+    
     
     override var inputAccessoryView: UIView! {
         get {
@@ -186,17 +339,22 @@ class ChatViewController: UITableViewController, UITextViewDelegate {
             let cellIdentifier = NSStringFromClass(MessageSentDateTableViewCell)
             let cell:MessageSentDateTableViewCell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! MessageSentDateTableViewCell
 //            cell = MessageSentDateTableViewCell(style: .Default, reuseIdentifier: cellIdentifier)
-            let message = messages[indexPath.row][0]
-//            cell.sentDateLabel.text = "\(message.sentDate)"
-            print(message.sentDate)
-            cell.sentDateLabel.text = formatDate(message.sentDate)
+            if messages.count > 0 {
+                let message = messages[indexPath.row][0]
+                //            cell.sentDateLabel.text = "\(message.sentDate)"
+                print(message.sentDate)
+                cell.sentDateLabel.text = formatDate(message.sentDate)
+            }
+
             return cell
         } else {
             let cellIdentifier = NSStringFromClass(MessageBubbleTableViewCell)
             let cell:MessageBubbleTableViewCell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! MessageBubbleTableViewCell
 //            cell = MessageBubbleTableViewCell(style: .Default, reuseIdentifier: cellIdentifier)
-            let message = messages[indexPath.section][indexPath.row - 1]
-            cell.configureWithMessage(message)
+            if messages.count > 0 {
+                let message = messages[indexPath.section][indexPath.row - 1]
+                cell.configureWithMessage(message)
+            }
             return cell
         }
     }
@@ -262,7 +420,10 @@ class ChatViewController: UITableViewController, UITextViewDelegate {
 
 extension ChatViewController {
     func sendAction() {
-        messages.append([Message(incoming: false, text: textView.text, sentDate: NSDate())])
+        let inputMessage = Message(incoming: false, text: textView.text, sentDate: NSDate())
+        saveMessage(inputMessage)
+        messages.append([inputMessage])
+        let question = textView.text
         textView.text = nil
         updateTextViewHeight()
         sendButton.enabled = false
@@ -275,11 +436,19 @@ extension ChatViewController {
         tableViewScrollToBottomAnimated(true)
 
         
-        Alamofire.request(.GET, NSURL(string: api_url)!, parameters: ["key":api_key,"info":textView.text,"userid":userId]).responseJSON(options: NSJSONReadingOptions.MutableContainers) { (_,_,data) -> Void in
+        Alamofire.request(.GET, NSURL(string: api_url)!, parameters: ["key":api_key,"info":question,"userid":userId]).responseJSON(options: NSJSONReadingOptions.MutableContainers) { (_,_,data) -> Void in
           
-            print(data)
         if let text = data.value!.objectForKey("text") as? String{
-            self.messages[lastSection].append(Message(incoming: true, text:text, sentDate: NSDate()))
+            if let url = data.value!.objectForKey("url") as? String {
+                let message = Message(incoming: true, text: text+"\n(点击该消息打开查看", sentDate: NSDate())
+                message.url = url
+                self.saveMessage(message)
+                self.messages[lastSection].append(message)
+            } else {
+                let message = Message(incoming: true, text:text, sentDate: NSDate())
+                self.saveMessage(message)
+                self.messages[lastSection].append(message)
+            }
             self.tableView.beginUpdates()
             self.tableView.insertRowsAtIndexPaths([
                 NSIndexPath(forRow: 2, inSection: lastSection)
@@ -331,6 +500,32 @@ extension ChatViewController {
     func textViewDidChange(textView: UITextView) {
         updateTextViewHeight()
         sendButton.enabled = textView.hasText()
+    }
+    
+    
+    func saveMessage(message:Message) {
+        let saveObject = PFObject(className: "Messages")
+        saveObject["incoming"] = message.incoming
+        saveObject["text"] = message.text
+        saveObject["sentDate"] = message.sentDate
+        saveObject["url"] = message.url
+        saveObject.saveEventually { (success, error) -> Void in
+            if success{
+                print("消息保存成功!")
+            }else{
+                print("消息保存失败! \(error)")
+            }
+        }
+    }
+    
+    
+    override func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
+        let selectedCell = tableView.cellForRowAtIndexPath(indexPath) as! MessageBubbleTableViewCell
+        if selectedCell.url != "" {
+            let url = NSURL(string: selectedCell.url)
+            UIApplication.sharedApplication().openURL(url!)
+        }
+        return nil
     }
 }
 
